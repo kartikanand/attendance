@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ffffff">
+<title>Consent Form — Email &amp; Photos</title>
+<style>
+  :root {
+    --bg: #fcfbf8;
+    --fg: #2c2c2c;
+    --muted: #7c7c74;
+    --line: #e6e1d6;
+    --line-strong: #cdb8c9;
+    --ink: #3a3a36;
+    --surface: #f1efe8;
+    --accent: #8bbfa6;
+    --accent-strong: #4f9a78;
+    --accent-soft: #e6f1ea;
+    --blush: #f6e2e6;
+    --sky: #e4eef5;
+    --yes-bg: #d9efe1;
+    --yes-fg: #256b48;
+    --yes-line: #7cc39c;
+    --no-bg: #ffffff;
+    --no-fg: #9a9a92;
+    --touch: 48px;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.4;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  header {
+    padding: 26px 24px 18px;
+    border-bottom: 2px solid var(--accent);
+    text-align: center;
+    background: linear-gradient(135deg, var(--blush), var(--accent-soft) 55%, var(--sky));
+  }
+  header .workshop {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent-strong);
+    margin-bottom: 6px;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+  header p {
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 640px;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .toolbar .spacer { flex: 1 1 auto; }
+
+  button {
+    font: inherit;
+    color: var(--fg);
+    background: var(--bg);
+    border: 2px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 0 16px;
+    min-height: var(--touch);
+    min-width: var(--touch);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  button:active { background: var(--surface); }
+  button.primary { background: var(--accent-strong); color: #ffffff; border-color: var(--accent-strong); }
+  button.primary:active { opacity: 0.85; }
+  button.danger { border-color: #d8a3a3; color: #b05656; }
+
+  main { padding: 0 24px 120px; }
+
+  .table-wrap { width: 100%; overflow-x: auto; }
+
+  table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  thead th {
+    background: var(--accent-soft);
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-strong);
+    padding: 12px 14px;
+    border-bottom: 2px solid var(--accent);
+    border-top: 2px solid var(--accent);
+    white-space: nowrap;
+  }
+  th.consent-col, td.consent-col { text-align: center; width: 130px; }
+  th.del-col, td.del-col { width: 60px; text-align: center; }
+
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  tbody tr:active { background: var(--surface); }
+
+  .cell-input {
+    width: 100%;
+    font: inherit;
+    color: var(--fg);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 10px 10px;
+    min-height: var(--touch);
+  }
+  .cell-input:focus {
+    outline: none;
+    border-color: var(--line-strong);
+    background: var(--bg);
+  }
+  .cell-input::placeholder { color: var(--muted); }
+
+  .email-eventbrite {
+    padding: 10px;
+    min-height: var(--touch);
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .source-tag {
+    display: inline-block;
+    margin-top: 2px;
+    margin-left: 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-strong);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 1px 6px;
+  }
+
+  .consent-group {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .consent-btn {
+    width: var(--touch);
+    height: var(--touch);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: #b7b7ae;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .consent-btn:active { transform: scale(0.94); }
+  .consent-btn.tick.active {
+    background: var(--yes-bg);
+    color: var(--yes-fg);
+    border-color: var(--yes-line);
+  }
+  .consent-btn.cross.active {
+    background: var(--blush);
+    color: #b05656;
+    border-color: #d8a3a3;
+  }
+
+  .del-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 0;
+    border-radius: 10px;
+  }
+  .del-btn svg { width: 22px; height: 22px; display: block; }
+  .del-btn:active { color: #b05656; background: var(--blush); }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 60px 20px;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px 24px;
+    background: var(--bg);
+    border-top: 2px solid var(--accent);
+    font-size: 15px;
+  }
+  footer .stat b { font-size: 18px; color: var(--accent-strong); }
+  footer .stat span { color: var(--muted); }
+
+  /* Modal */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 50;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--bg);
+    border: 2px solid var(--line-strong);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 22px;
+  }
+  .modal h2 { margin: 0 0 6px; font-size: 20px; }
+  .modal p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+  .modal textarea {
+    width: 100%;
+    min-height: 180px;
+    font: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 14px;
+    padding: 12px;
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    resize: vertical;
+  }
+  .modal textarea:focus { outline: none; border-color: var(--line-strong); }
+  .modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .modal-actions .spacer { flex: 1 1 auto; }
+  .file-row { margin: 12px 0; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<header>
+  <div class="workshop">Texture &amp; Blooms</div>
+  <h1>Attendance &amp; Consent Form</h1>
+  <p>This is a consent form for our <strong>email list</strong> and for the use of <strong>photos on our social media</strong>. Tap a box in the last two columns to record consent — a tick means yes, a cross means no.</p>
+</header>
+
+<div class="toolbar">
+  <button class="primary" id="addBtn">+ Add person</button>
+  <button id="importListBtn">Import names / emails</button>
+  <span class="spacer"></span>
+  <button id="exportBtn">Export backup</button>
+  <button id="importJsonBtn">Import backup</button>
+  <button class="danger" id="clearBtn">Clear all</button>
+</div>
+
+<main>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th class="consent-col">Email list</th>
+          <th class="consent-col">Social media photos</th>
+          <th class="del-col"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="empty" id="emptyState">No people yet. Add someone, or import a list of names or emails.</div>
+</main>
+
+<footer>
+  <div class="stat"><b id="statTotal">0</b> <span>people</span></div>
+  <div class="stat"><b id="statEmail">0</b> <span>email consent</span></div>
+  <div class="stat"><b id="statPhoto">0</b> <span>photo consent</span></div>
+</footer>
+
+<!-- Import names/emails modal -->
+<div class="overlay" id="importListOverlay">
+  <div class="modal">
+    <h2>Import names / emails</h2>
+    <p>Paste a list below, or choose a file. Accepts a plain list (one name or email per line) or a CSV export from Eventbrite / ClassBento (name and email columns are detected automatically).</p>
+    <textarea id="importText" placeholder="Jane Doe&#10;john@example.com&#10;&#10;— or paste CSV —&#10;Name,Email&#10;Jane Doe,jane@example.com"></textarea>
+    <div class="file-row">
+      <label class="file-row" for="importFile"><button type="button" id="importFilePick">Choose .csv or .txt file…</button></label>
+      <input class="visually-hidden" type="file" id="importFile" accept=".csv,.txt,text/csv,text/plain">
+      <span id="importFileName" class="hint"></span>
+    </div>
+    <label class="hint"><input type="checkbox" id="dedupeChk" checked> Skip people whose email already exists</label>
+    <div class="modal-actions">
+      <button id="importListCancel">Cancel</button>
+      <span class="spacer"></span>
+      <button class="primary" id="importListConfirm">Import</button>
+    </div>
+  </div>
+</div>
+
+<input class="visually-hidden" type="file" id="jsonFile" accept=".json,application/json">
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "attendance.consent.v1";
+  var people = [];
+
+  /* ---------- persistence ---------- */
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) people = parsed.map(normalize);
+      }
+      // One-time migration: old data used false as the default (shown as a cross).
+      // Reset those to "unanswered" so nothing defaults to No.
+      if (!localStorage.getItem(STORAGE_KEY + ".consentMigrated")) {
+        people.forEach(function (p) {
+          if (p.emailConsent === false) p.emailConsent = null;
+          if (p.photoConsent === false) p.photoConsent = null;
+        });
+        localStorage.setItem(STORAGE_KEY + ".consentMigrated", "1");
+        if (people.length) save();
+      }
+    } catch (e) {
+      console.error("Failed to load stored data", e);
+      people = [];
+    }
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(people));
+    } catch (e) {
+      console.error("Failed to save data", e);
+      alert("Could not save data to this device's storage.");
+    }
+  }
+
+  function normalize(p) {
+    return {
+      id: p && p.id ? String(p.id) : uid(),
+      name: p && typeof p.name === "string" ? p.name : "",
+      email: p && typeof p.email === "string" ? p.email : "",
+      emailConsent: coerceConsent(p && p.emailConsent),
+      photoConsent: coerceConsent(p && p.photoConsent),
+      source: p && typeof p.source === "string" ? p.source : "manual"
+    };
+  }
+
+  // Three-state consent: true = yes, false = no, null = not answered yet.
+  function coerceConsent(v) {
+    if (v === true) return true;
+    if (v === false) return false;
+    return null;
+  }
+
+  function uid() {
+    return "p_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
+  }
+
+  /* ---------- rendering ---------- */
+  var tbody = document.getElementById("tbody");
+  var emptyState = document.getElementById("emptyState");
+
+  function render() {
+    tbody.innerHTML = "";
+    if (people.length === 0) {
+      emptyState.style.display = "block";
+    } else {
+      emptyState.style.display = "none";
+      for (var i = 0; i < people.length; i++) {
+        tbody.appendChild(rowFor(people[i]));
+      }
+    }
+    updateStats();
+  }
+
+  function rowFor(person) {
+    var tr = document.createElement("tr");
+    tr.dataset.id = person.id;
+
+    // Name
+    var tdName = document.createElement("td");
+    tdName.appendChild(makeInput(person, "name", "Full name", "text"));
+    tr.appendChild(tdName);
+
+    // Email + source tag
+    var tdEmail = document.createElement("td");
+    if (person.source === "eventbrite" && !person.email) {
+      var lbl = document.createElement("div");
+      lbl.className = "email-eventbrite";
+      lbl.textContent = "Get from Eventbrite";
+      tdEmail.appendChild(lbl);
+    } else {
+      tdEmail.appendChild(makeInput(person, "email", "name@email.com", "email"));
+    }
+    if (person.source && person.source !== "manual") {
+      var tag = document.createElement("span");
+      tag.className = "source-tag";
+      tag.textContent = person.source;
+      tdEmail.appendChild(tag);
+    }
+    tr.appendChild(tdEmail);
+
+    // Email consent
+    tr.appendChild(makeConsentCell(person, "emailConsent"));
+    // Photo consent
+    tr.appendChild(makeConsentCell(person, "photoConsent"));
+
+    // Delete
+    var tdDel = document.createElement("td");
+    tdDel.className = "del-col";
+    var del = document.createElement("button");
+    del.className = "del-btn";
+    del.setAttribute("aria-label", "Remove person");
+    del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>';
+    del.addEventListener("click", function () {
+      if (confirm("Remove " + (person.name || person.email || "this person") + "?")) {
+        removePerson(person.id);
+      }
+    });
+    tdDel.appendChild(del);
+    tr.appendChild(tdDel);
+
+    return tr;
+  }
+
+  function makeInput(person, field, placeholder, type) {
+    var input = document.createElement("input");
+    input.className = "cell-input";
+    input.type = type;
+    input.value = person[field] || "";
+    input.placeholder = placeholder;
+    input.autocapitalize = field === "email" ? "off" : "words";
+    input.autocomplete = "off";
+    input.spellcheck = false;
+    input.addEventListener("input", function () {
+      person[field] = input.value;
+      save();
+    });
+    return input;
+  }
+
+  function makeConsentCell(person, field) {
+    var td = document.createElement("td");
+    td.className = "consent-col";
+    var group = document.createElement("div");
+    group.className = "consent-group";
+    var label = field === "emailConsent" ? "Email list consent" : "Photo consent";
+
+    var tick = document.createElement("div");
+    tick.className = "consent-btn tick";
+    tick.textContent = "\u2713";
+    tick.setAttribute("role", "button");
+    tick.setAttribute("tabindex", "0");
+    tick.setAttribute("aria-label", label + ": yes");
+
+    var cross = document.createElement("div");
+    cross.className = "consent-btn cross";
+    cross.textContent = "\u2715";
+    cross.setAttribute("role", "button");
+    cross.setAttribute("tabindex", "0");
+    cross.setAttribute("aria-label", label + ": no");
+
+    function paint() {
+      var v = person[field];
+      tick.classList.toggle("active", v === true);
+      cross.classList.toggle("active", v === false);
+      tick.setAttribute("aria-pressed", v === true ? "true" : "false");
+      cross.setAttribute("aria-pressed", v === false ? "true" : "false");
+    }
+    function set(value) {
+      person[field] = value;
+      paint();
+      save();
+      updateStats();
+    }
+    tick.addEventListener("click", function () { set(true); });
+    cross.addEventListener("click", function () { set(false); });
+    tick.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); set(true); }
+    });
+    cross.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); set(false); }
+    });
+
+    paint();
+    group.appendChild(tick);
+    group.appendChild(cross);
+    td.appendChild(group);
+    return td;
+  }
+
+  function updateStats() {
+    var email = 0, photo = 0;
+    for (var i = 0; i < people.length; i++) {
+      if (people[i].emailConsent) email++;
+      if (people[i].photoConsent) photo++;
+    }
+    document.getElementById("statTotal").textContent = String(people.length);
+    document.getElementById("statEmail").textContent = String(email);
+    document.getElementById("statPhoto").textContent = String(photo);
+  }
+
+  /* ---------- mutations ---------- */
+  function addPerson(data) {
+    var p = normalize(data || {});
+    people.push(p);
+    save();
+    render();
+    return p;
+  }
+
+  function removePerson(id) {
+    people = people.filter(function (p) { return p.id !== id; });
+    save();
+    render();
+  }
+
+  /* ---------- import: names / emails ---------- */
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function looksLikeEmail(s) { return EMAIL_RE.test(String(s || "").trim()); }
+
+  // Parse a single CSV line respecting quotes.
+  function parseCsvLine(line) {
+    var out = [];
+    var cur = "";
+    var inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (inQ) {
+        if (c === '"') {
+          if (line[i + 1] === '"') { cur += '"'; i++; }
+          else inQ = false;
+        } else cur += c;
+      } else {
+        if (c === '"') inQ = true;
+        else if (c === ",") { out.push(cur); cur = ""; }
+        else cur += c;
+      }
+    }
+    out.push(cur);
+    return out.map(function (s) { return s.trim(); });
+  }
+
+  function splitLines(text) {
+    return text.replace(/\r\n?/g, "\n").split("\n").filter(function (l) {
+      var t = l.trim();
+      return t !== "" && t.charAt(0) !== "#"; // ignore blank and #comment lines
+    });
+  }
+
+  // Decide whether input is CSV with a header, then map to {name,email,source}.
+  // Plain lists support `# section` marker lines that switch the source for the
+  // lines that follow them (e.g. `# Eventbrite` ... names ... `# Other` ... names).
+  function parseImport(text) {
+    var lines = splitLines(text);
+    if (lines.length === 0) return [];
+
+    var firstCells = parseCsvLine(lines[0]);
+    var isCsv = firstCells.length > 1 || lines.some(function (l) { return l.indexOf(",") !== -1; });
+
+    if (isCsv) {
+      var header = firstCells.map(function (h) { return h.toLowerCase(); });
+      var idx = detectColumns(header);
+      var hasHeader = idx.name !== -1 || idx.email !== -1 || idx.first !== -1 || idx.last !== -1;
+      var csvSource = detectSource(text);
+      var rows = [];
+      var start = hasHeader ? 1 : 0;
+      for (var i = start; i < lines.length; i++) {
+        var cells = parseCsvLine(lines[i]);
+        var mapped = mapCsvRow(cells, hasHeader ? idx : null);
+        mapped.source = csvSource;
+        rows.push(mapped);
+      }
+      return rows.filter(function (r) { return r.name || r.email; });
+    }
+
+    // Plain list: one name or email per line, with `# section` markers.
+    var out = [];
+    var curSource = "import"; // default section: editable email
+    var raw = text.replace(/\r\n?/g, "\n").split("\n");
+    for (var j = 0; j < raw.length; j++) {
+      var v = raw[j].trim();
+      if (v === "") continue;
+      if (v.charAt(0) === "#") { curSource = sourceFromComment(v); continue; }
+      if (looksLikeEmail(v)) out.push({ name: "", email: v, source: curSource });
+      else out.push({ name: v, email: "", source: curSource });
+    }
+    return out;
+  }
+
+  // Map a `# ...` marker line to a source tag.
+  function sourceFromComment(line) {
+    var t = line.toLowerCase();
+    if (t.indexOf("eventbrite") !== -1) return "eventbrite";
+    if (t.indexOf("classbento") !== -1) return "classbento";
+    return "import";
+  }
+
+
+  function detectColumns(header) {
+    function find(preds) {
+      for (var i = 0; i < header.length; i++) {
+        for (var j = 0; j < preds.length; j++) {
+          if (preds[j](header[i])) return i;
+        }
+      }
+      return -1;
+    }
+    var eq = function (t) { return function (h) { return h === t; }; };
+    var has = function (t) { return function (h) { return h.indexOf(t) !== -1; }; };
+    return {
+      email: find([eq("email"), eq("email address"), eq("buyer email"), has("email")]),
+      name: find([eq("name"), eq("full name"), eq("attendee name"), eq("buyer name"), has("full name"), has("name")]),
+      first: find([eq("first name"), eq("firstname"), has("first name")]),
+      last: find([eq("last name"), eq("lastname"), has("last name")])
+    };
+  }
+
+  function mapCsvRow(cells, idx) {
+    if (!idx) {
+      // No header: first cell name, find any email cell.
+      var email = "";
+      var name = "";
+      for (var i = 0; i < cells.length; i++) {
+        if (!email && looksLikeEmail(cells[i])) { email = cells[i]; }
+        else if (!name && cells[i]) { name = cells[i]; }
+      }
+      return { name: name, email: email };
+    }
+    var nm = "";
+    if (idx.name !== -1) nm = cells[idx.name] || "";
+    if (!nm && (idx.first !== -1 || idx.last !== -1)) {
+      nm = [idx.first !== -1 ? cells[idx.first] : "", idx.last !== -1 ? cells[idx.last] : ""].join(" ").trim();
+    }
+    var em = idx.email !== -1 ? (cells[idx.email] || "") : "";
+    if (!em) {
+      for (var k = 0; k < cells.length; k++) { if (looksLikeEmail(cells[k])) { em = cells[k]; break; } }
+    }
+    return { name: nm.trim(), email: em.trim() };
+  }
+
+  function detectSource(text) {
+    var t = text.toLowerCase();
+    if (t.indexOf("eventbrite") !== -1) return "eventbrite";
+    if (t.indexOf("classbento") !== -1) return "classbento";
+    return "import";
+  }
+
+  function runImport(text) {
+    var parsed = parseImport(text);
+    if (parsed.length === 0) {
+      alert("Nothing to import — no names or emails found.");
+      return;
+    }
+    var dedupe = document.getElementById("dedupeChk").checked;
+    var existing = {};
+    people.forEach(function (p) { if (p.email) existing[p.email.toLowerCase()] = true; });
+
+    var source = detectSource(text);
+    var added = 0, skipped = 0;
+    parsed.forEach(function (r) {
+      var key = r.email ? r.email.toLowerCase() : "";
+      if (dedupe && key && existing[key]) { skipped++; return; }
+      if (key) existing[key] = true;
+      people.push(normalize({ name: r.name, email: r.email, source: r.source || source }));
+      added++;
+    });
+    save();
+    render();
+    var msg = "Imported " + added + " " + (added === 1 ? "person" : "people") + ".";
+    if (skipped) msg += " Skipped " + skipped + " duplicate " + (skipped === 1 ? "email" : "emails") + ".";
+    alert(msg);
+  }
+
+  /* ---------- export / import JSON ---------- */
+  function exportJson() {
+    var payload = {
+      type: "attendance-consent",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      people: people
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "attendance-" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function importJson(text) {
+    var data;
+    try { data = JSON.parse(text); }
+    catch (e) { alert("That file is not valid JSON."); return; }
+
+    var incoming = Array.isArray(data) ? data : (data && Array.isArray(data.people) ? data.people : null);
+    if (!incoming) { alert("That file doesn't contain attendance data."); return; }
+
+    var normalized = incoming.map(normalize);
+    var choice = "replace";
+    if (people.length > 0) {
+      var merge = confirm(
+        "Import " + normalized.length + " people.\n\n" +
+        "OK = Merge with the current list.\n" +
+        "Cancel = Replace the current list."
+      );
+      choice = merge ? "merge" : "replace";
+    }
+
+    if (choice === "replace") {
+      people = normalized;
+    } else {
+      var existing = {};
+      people.forEach(function (p) { if (p.email) existing[p.email.toLowerCase()] = true; });
+      normalized.forEach(function (p) {
+        var key = p.email ? p.email.toLowerCase() : "";
+        if (key && existing[key]) return;
+        if (key) existing[key] = true;
+        people.push(p);
+      });
+    }
+    save();
+    render();
+  }
+
+  /* ---------- file reading ---------- */
+  function readFile(file, cb) {
+    var reader = new FileReader();
+    reader.onload = function () { cb(String(reader.result || "")); };
+    reader.onerror = function () { alert("Could not read that file."); };
+    reader.readAsText(file);
+  }
+
+  /* ---------- modal wiring ---------- */
+  var importOverlay = document.getElementById("importListOverlay");
+  var importText = document.getElementById("importText");
+  var importFile = document.getElementById("importFile");
+  var importFileName = document.getElementById("importFileName");
+
+  function openImportModal() {
+    importText.value = "";
+    importFileName.textContent = "";
+    importFile.value = "";
+    importOverlay.classList.add("open");
+    setTimeout(function () { importText.focus(); }, 50);
+  }
+  function closeImportModal() { importOverlay.classList.remove("open"); }
+
+  document.getElementById("importListBtn").addEventListener("click", openImportModal);
+  document.getElementById("importListCancel").addEventListener("click", closeImportModal);
+  importOverlay.addEventListener("click", function (e) {
+    if (e.target === importOverlay) closeImportModal();
+  });
+  document.getElementById("importFilePick").addEventListener("click", function () { importFile.click(); });
+  importFile.addEventListener("change", function () {
+    if (!importFile.files || !importFile.files[0]) return;
+    var file = importFile.files[0];
+    importFileName.textContent = file.name;
+    readFile(file, function (text) { importText.value = text; });
+  });
+  document.getElementById("importListConfirm").addEventListener("click", function () {
+    var text = importText.value.trim();
+    if (!text) { alert("Paste a list or choose a file first."); return; }
+    runImport(text);
+    closeImportModal();
+  });
+
+  /* ---------- toolbar wiring ---------- */
+  document.getElementById("addBtn").addEventListener("click", function () {
+    var p = addPerson({ source: "manual" });
+    // focus the new row's name field
+    var row = tbody.querySelector('tr[data-id="' + p.id + '"]');
+    if (row) {
+      var input = row.querySelector(".cell-input");
+      if (input) { input.scrollIntoView({ block: "center" }); input.focus(); }
+    }
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", exportJson);
+
+  var jsonFile = document.getElementById("jsonFile");
+  document.getElementById("importJsonBtn").addEventListener("click", function () {
+    jsonFile.value = "";
+    jsonFile.click();
+  });
+  jsonFile.addEventListener("change", function () {
+    if (!jsonFile.files || !jsonFile.files[0]) return;
+    readFile(jsonFile.files[0], importJson);
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", function () {
+    if (people.length === 0) return;
+    if (confirm("Delete all " + people.length + " people? Export a backup first if you want to keep this data.")) {
+      people = [];
+      save();
+      render();
+    }
+  });
+
+  /* ---------- init ---------- */
+  load();
+  render();
+})();
+</script>
+</body>
+</html>
