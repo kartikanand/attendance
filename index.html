@@ -434,7 +434,7 @@
     // Email + source tag (editable; get-from sources show a hint placeholder)
     var tdEmail = document.createElement("td");
     var isGetFrom = person.source && person.source !== "manual";
-    var placeholder = isGetFrom && !person.email ? ("Get from " + person.source) : "name@email.com";
+    var placeholder = isGetFrom && !person.email ? ("Tap to add email, or get from " + person.source) : "name@email.com";
     tdEmail.appendChild(makeInput(person, "email", placeholder, "email"));
     if (isGetFrom) {
       var tag = document.createElement("span");
