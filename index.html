@@ -289,7 +289,7 @@
 </header>
 
 <div class="toolbar">
-  <button class="primary" id="addBtn">+ Add person</button>
+  <button class="primary" id="addBtn">+ Add</button>
   <button id="importListBtn">Import names / emails</button>
   <span class="spacer"></span>
   <button id="exportBtn">Export backup</button>
@@ -304,7 +304,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th class="consent-col">Email list</th>
+          <th class="consent-col">Add to Email list</th>
           <th class="consent-col">Social media photos</th>
           <th class="del-col"></th>
         </tr>
@@ -431,17 +431,12 @@
     tdName.appendChild(makeInput(person, "name", "Full name", "text"));
     tr.appendChild(tdName);
 
-    // Email + source tag
+    // Email + source tag (editable; get-from sources show a hint placeholder)
     var tdEmail = document.createElement("td");
-    if (person.source === "eventbrite" && !person.email) {
-      var lbl = document.createElement("div");
-      lbl.className = "email-eventbrite";
-      lbl.textContent = "Get from Eventbrite";
-      tdEmail.appendChild(lbl);
-    } else {
-      tdEmail.appendChild(makeInput(person, "email", "name@email.com", "email"));
-    }
-    if (person.source && person.source !== "manual") {
+    var isGetFrom = person.source && person.source !== "manual";
+    var placeholder = isGetFrom && !person.email ? ("Get from " + person.source) : "name@email.com";
+    tdEmail.appendChild(makeInput(person, "email", placeholder, "email"));
+    if (isGetFrom) {
       var tag = document.createElement("span");
       tag.className = "source-tag";
       tag.textContent = person.source;
@@ -626,7 +621,7 @@
 
     // Plain list: one name or email per line, with `# section` markers.
     var out = [];
-    var curSource = "import"; // default section: editable email
+    var curSource = ""; // default section: editable email
     var raw = text.replace(/\r\n?/g, "\n").split("\n");
     for (var j = 0; j < raw.length; j++) {
       var v = raw[j].trim();
@@ -638,12 +633,12 @@
     return out;
   }
 
-  // Map a `# ...` marker line to a source tag.
+  // Map a `# ...` marker line to a source. `# Other` (or blank) means an
+  // ordinary editable-email row; any other tag becomes a "Get from <tag>" row.
   function sourceFromComment(line) {
-    var t = line.toLowerCase();
-    if (t.indexOf("eventbrite") !== -1) return "eventbrite";
-    if (t.indexOf("classbento") !== -1) return "classbento";
-    return "import";
+    var label = line.replace(/^#+/, "").trim();
+    if (!label || label.toLowerCase() === "other") return "";
+    return label;
   }
 
 
@@ -691,9 +686,9 @@
 
   function detectSource(text) {
     var t = text.toLowerCase();
-    if (t.indexOf("eventbrite") !== -1) return "eventbrite";
-    if (t.indexOf("classbento") !== -1) return "classbento";
-    return "import";
+    if (t.indexOf("eventbrite") !== -1) return "Eventbrite";
+    if (t.indexOf("classbento") !== -1) return "ClassBento";
+    return "";
   }
 
   function runImport(text) {
@@ -706,13 +701,14 @@
     var existing = {};
     people.forEach(function (p) { if (p.email) existing[p.email.toLowerCase()] = true; });
 
-    var source = detectSource(text);
+    var fallback = detectSource(text);
     var added = 0, skipped = 0;
     parsed.forEach(function (r) {
       var key = r.email ? r.email.toLowerCase() : "";
       if (dedupe && key && existing[key]) { skipped++; return; }
       if (key) existing[key] = true;
-      people.push(normalize({ name: r.name, email: r.email, source: r.source || source }));
+      var src = r.source !== undefined ? r.source : fallback;
+      people.push(normalize({ name: r.name, email: r.email, source: src }));
       added++;
     });
     save();
