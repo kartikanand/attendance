@@ -98,7 +98,7 @@
 
   .table-wrap { width: 100%; overflow-x: auto; }
 
-  table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; }
   thead th {
     background: var(--accent-soft);
     text-align: left;
@@ -117,7 +117,6 @@
   }
   th.consent-col, td.consent-col { text-align: center; width: 116px; }
   th.del-col, td.del-col { width: 52px; text-align: center; }
-  th.name-col, td.name-col { width: 220px; }
 
   tbody td {
     padding: 8px 14px;
@@ -297,7 +296,6 @@
     .cell-input { padding: 9px 8px; }
     th.consent-col, td.consent-col { width: 104px; }
     th.del-col, td.del-col { width: 46px; }
-    th.name-col, td.name-col { width: 150px; }
     .consent-group { gap: 6px; }
     .consent-btn { width: 42px; height: 42px; font-size: 19px; border-radius: 10px; }
     .del-btn { width: 40px; height: 40px; }
@@ -308,7 +306,6 @@
   /* Very narrow: shrink the consent columns further */
   @media (max-width: 680px) {
     th.consent-col, td.consent-col { width: 92px; }
-    th.name-col, td.name-col { width: 120px; }
     .consent-group { gap: 4px; }
     .consent-btn { width: 38px; height: 38px; font-size: 17px; }
   }
