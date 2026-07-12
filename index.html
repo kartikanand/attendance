@@ -47,21 +47,21 @@
     background: linear-gradient(135deg, var(--blush), var(--accent-soft) 55%, var(--sky));
   }
   header .workshop {
-    font-size: 14px;
+    font-size: clamp(11px, 2.2vw, 14px);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--accent-strong);
     margin-bottom: 6px;
   }
   header h1 {
     margin: 0 0 8px;
-    font-size: 26px;
+    font-size: clamp(20px, 4.5vw, 26px);
     letter-spacing: -0.02em;
   }
   header p {
     margin: 0 auto;
     color: var(--muted);
-    font-size: 15px;
+    font-size: clamp(13px, 1.9vw, 15px);
     max-width: 640px;
   }
 
@@ -98,21 +98,25 @@
 
   .table-wrap { width: 100%; overflow-x: auto; }
 
-  table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
   thead th {
     background: var(--accent-soft);
     text-align: left;
-    font-size: 13px;
+    font-size: clamp(11px, 1.5vw, 13px);
+    line-height: 1.2;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     color: var(--accent-strong);
-    padding: 12px 14px;
+    padding: 10px 12px;
     border-bottom: 2px solid var(--accent);
     border-top: 2px solid var(--accent);
-    white-space: nowrap;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+    vertical-align: bottom;
   }
-  th.consent-col, td.consent-col { text-align: center; width: 130px; }
-  th.del-col, td.del-col { width: 60px; text-align: center; }
+  th.consent-col, td.consent-col { text-align: center; width: 116px; }
+  th.del-col, td.del-col { width: 52px; text-align: center; }
 
   tbody td {
     padding: 8px 14px;
@@ -279,6 +283,32 @@
   .file-row { margin: 12px 0; }
   .hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  /* Narrow / iPad portrait: tighten spacing and shrink controls */
+  @media (max-width: 900px) {
+    :root { --touch: 44px; }
+    header { padding: 18px 14px 14px; }
+    .toolbar { gap: 8px; padding: 10px 14px; }
+    button { padding: 0 12px; border-radius: 9px; }
+    main { padding: 0 14px 110px; }
+    thead th { padding: 9px 8px; }
+    tbody td { padding: 6px 8px; }
+    .cell-input { padding: 9px 8px; }
+    th.consent-col, td.consent-col { width: 104px; }
+    th.del-col, td.del-col { width: 46px; }
+    .consent-group { gap: 6px; }
+    .consent-btn { width: 42px; height: 42px; font-size: 19px; border-radius: 10px; }
+    .del-btn { width: 40px; height: 40px; }
+    .source-tag { margin-left: 0; }
+    footer { gap: 14px; padding: 10px 14px; font-size: 14px; }
+  }
+
+  /* Very narrow: shrink the consent columns further */
+  @media (max-width: 680px) {
+    th.consent-col, td.consent-col { width: 92px; }
+    .consent-group { gap: 4px; }
+    .consent-btn { width: 38px; height: 38px; font-size: 17px; }
+  }
 </style>
 </head>
 <body>
